@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: naomie_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: birthday_db
+      POSTGRES_USER: birthday_user
+      POSTGRES_PASSWORD: birthday_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U birthday_user -d birthday_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: naomie_backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: birthday_user
+      DB_PASSWORD: birthday_password
+      DB_NAME: birthday_db
+
+  frontend:
+    build: ./frontend
+    container_name: naomie_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
