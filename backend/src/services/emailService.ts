@@ -32,7 +32,7 @@ Thank you for your RSVP to Naomie's Birthday.
 We are happy to let you know that your RSVP has been received successfully.
 
 Event Details:
-Date: April 10, 2026
+Date: April 11, 2026
 Time: 3:00 PM
 Location: 720 Hank Aaron Drive SE, Atlanta (GA)
 
@@ -60,7 +60,7 @@ Hello ${guestName},
 This is a friendly reminder that Naomie's Birthday is happening soon!
 
 Event Details:
-Date: April 10, 2026
+Date: April 11, 2026
 Time: 3:00 PM
 Location: 720 Hank Aaron Drive SE, Atlanta (GA)
 

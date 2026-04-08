@@ -181,7 +181,7 @@ export default function Menu() {
             <p style={item}>Banane</p>
             <p style={item}>Chikwang</p>
             <p style={item}>Jalof Rice</p>
-            <p style={item}>Steak</p>
+            <p style={item}>Congolese Turkey</p>
             <SectionDivider icon={<DessertIcon />} title="DESSERTS" />
 
             <p style={item}>Boule De Neige</p>
