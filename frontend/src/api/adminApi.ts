@@ -1,4 +1,5 @@
-const API_BASE_URL = "https://naomies-birthday-production.up.railway.app/";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api";
 
 export async function adminLogin(email: string, password: string) {
   const response = await fetch(`${API_BASE_URL}/admin/login`, {
