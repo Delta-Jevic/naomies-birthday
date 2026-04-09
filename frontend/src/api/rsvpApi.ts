@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = "https://naomies-birthday-production.up.railway.app/";
 
 export async function getRsvps() {
   const response = await fetch(`${API_BASE_URL}/rsvps`);
