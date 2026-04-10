@@ -345,7 +345,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 fontFamily: "'Cormorant Garamond', serif",
               }}
             >
-              Click to RSVP
+              
             </button>
           </div>
         ) : (
