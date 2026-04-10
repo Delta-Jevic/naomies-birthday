@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { pool } from "../db/postgres";
-import { sendAdminOtpEmail } from "../services/emailService";
 
 // Admin signup
 export const adminSignup = async (req: Request, res: Response) => {
@@ -84,28 +83,20 @@ export const adminLogin = async (req: Request, res: Response) => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Remove older OTPs for this admin first
     await pool.query(
-      `
-      DELETE FROM admin_otps
-      WHERE admin_email = $1
-      `,
+      `DELETE FROM admin_otps WHERE admin_email = $1`,
       [email]
     );
 
     await pool.query(
-      `
-      INSERT INTO admin_otps (admin_email, code, expires_at)
-      VALUES ($1, $2, $3)
-      `,
+      `INSERT INTO admin_otps (admin_email, code, expires_at) VALUES ($1, $2, $3)`,
       [email, code, expiresAt]
     );
 
-    await sendAdminOtpEmail(email, code);
-
     return res.status(200).json({
-      message: "Verification code sent successfully.",
+      message: "Verification code generated.",
       email,
+      code,
     });
   } catch (error) {
     console.error("Admin login error:", error);
@@ -153,12 +144,8 @@ export const verifyAdminOtp = async (req: Request, res: Response) => {
       });
     }
 
-    // Delete used OTP after success
     await pool.query(
-      `
-      DELETE FROM admin_otps
-      WHERE admin_email = $1
-      `,
+      `DELETE FROM admin_otps WHERE admin_email = $1`,
       [email]
     );
 

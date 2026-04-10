@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { pool } from "../db/postgres";
-import { sendRsvpConfirmationEmail } from "../services/emailService";
 
 // Create a new RSVP and save it into PostgreSQL
 export const createRsvp = async (req: Request, res: Response) => {
   const { name, phone, email } = req.body;
 
-  // Basic validation
   if (!name || !phone || !email) {
     return res.status(400).json({
       message: "Name, phone, and email are required.",
@@ -23,24 +21,9 @@ export const createRsvp = async (req: Request, res: Response) => {
     const values = [name, phone, email];
     const result = await pool.query(insertQuery, values);
 
-    const savedRsvp = result.rows[0];
-
-    /*
-    Send confirmation email after saving RSVP.
-    We do this after the database insert so we only email real saved RSVPs.
-    */
-    try {
-      await sendRsvpConfirmationEmail(name, email);
-    } catch (emailError) {
-      console.error("Email sending failed:", emailError);
-
-      // We do not fail the whole RSVP if email fails.
-      // The RSVP is already saved in the database.
-    }
-
     return res.status(201).json({
       message: "RSVP saved to database successfully.",
-      data: savedRsvp,
+      data: result.rows[0],
     });
   } catch (error) {
     console.error("Error saving RSVP:", error);
