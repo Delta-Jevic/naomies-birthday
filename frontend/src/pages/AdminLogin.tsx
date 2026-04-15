@@ -28,10 +28,15 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      await adminLogin(formData.email, formData.password);
+      const result = await adminLogin(formData.email, formData.password);
 
       // Save email so the OTP page knows where to verify
       localStorage.setItem("adminEmail", formData.email);
+
+      // Save the OTP code so the verify page can display it (email sending is disabled)
+      if (result.code) {
+        localStorage.setItem("adminOtpCode", result.code);
+      }
 
       navigate("/admin/verify-otp");
     } catch (err: any) {

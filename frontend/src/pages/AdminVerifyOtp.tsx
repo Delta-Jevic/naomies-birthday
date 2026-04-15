@@ -5,6 +5,7 @@ import { verifyAdminOtp } from "../api/adminApi";
 export default function AdminVerifyOtp() {
   const navigate = useNavigate();
   const adminEmail = localStorage.getItem("adminEmail") || "";
+  const adminOtpCode = localStorage.getItem("adminOtpCode") || "";
 
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -20,6 +21,7 @@ export default function AdminVerifyOtp() {
 
       if (result.isAuthenticated) {
         localStorage.setItem("adminAuthenticated", "true");
+        localStorage.removeItem("adminOtpCode");
         navigate("/admin/rsvps");
       }
     } catch (err: any) {
@@ -140,10 +142,25 @@ export default function AdminVerifyOtp() {
                   fontFamily: "'Cormorant Garamond', serif",
                 }}
               >
-                Enter the code sent to:
+                Your verification code:
               </p>
 
               <p style={{ color: "#edd0a4", marginTop: "8px" }}>{adminEmail}</p>
+
+              {adminOtpCode && (
+                <p
+                  style={{
+                    marginTop: "14px",
+                    fontSize: "28px",
+                    fontWeight: 700,
+                    letterSpacing: "0.28em",
+                    color: "#edd0a4",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {adminOtpCode}
+                </p>
+              )}
             </div>
 
             <form onSubmit={handleSubmit} style={{ marginTop: "28px" }}>
